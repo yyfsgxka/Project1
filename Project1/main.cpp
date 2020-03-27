@@ -23,16 +23,17 @@ int main()
 		Mat out_blur_frame;
 		Mat out_G_frame;
 		Mat out_sobel_frame;
+		Mat rframe;
+		Mat dx; Mat dy;
+		Mat abs_dx;
+		Mat abs_dy;
 		int Ksize = 3 * 3;
 		Size size;
 		size.height = 3;
 		size.width = 3;
 		double sigmaX = 1;
 		double sigmaY = 0;
-		int dx = 1;
-		int dy = 0;
-
-
+	
 		bool rSucess = cap.read(frame);
 		if (!rSucess)
 		{
@@ -53,8 +54,14 @@ int main()
 			GaussianBlur(frame, out_G_frame, size, sigmaX, sigmaY, 4);
 			imshow("高斯滤波", out_G_frame);
 			//Sobel边缘提取--练习四
-			Sobel(frame, out_sobel_frame, -1, dx, dy, 3, (1, 0), (0, 0), 4);
-			imshow("边缘提取", out_sobel_frame);
+			cvtColor(frame, rframe, CV_RGB2GRAY);
+			Sobel(rframe, dx, -1, 1, 0, 3);
+			convertScaleAbs(dx, abs_dx);
+			Sobel(rframe, dy, -1, 1, 0, 3);
+		    convertScaleAbs(dy, abs_dy);
+			
+			imshow("边缘提取x", abs_dx);
+			imshow("边缘提取y", abs_dy);
 		
 
 		}
